@@ -1,0 +1,342 @@
+// 2kyu https://www.codewars.com/kata/4-by-4-skyscrapers
+
+#include <stdio.h>
+#include <stdlib.h>
+using namespace std;
+int clu[16];
+int* ptout[4];
+int outt[4][4];
+void enter4(int i)
+{
+    if (i < 4)
+    {
+        outt[0][i] = 1;
+        outt[1][i] = 2;
+        outt[2][i] = 3;
+        outt[3][i] = 4;
+    }
+    if ((i > 3) && (i < 8))
+    {
+        outt[i - 4][3] = 1;
+        outt[i - 4][2] = 2;
+        outt[i - 4][1] = 3;
+        outt[i - 4][0] = 4;
+    }
+    if ((i > 7) && (i < 12))
+    {
+        outt[3][11 - i] = 1;
+        outt[2][11 - i] = 2;
+        outt[1][11 - i] = 3;
+        outt[0][11 - i] = 4;
+    }
+    if (i > 11)
+    {
+        outt[15 - i][0] = 1;
+        outt[15 - i][1] = 2;
+        outt[15 - i][2] = 3;
+        outt[15 - i][3] = 4;
+    }
+};
+//---------------------------------------------
+void enter1(int i)
+{
+    if (i < 4)
+        outt[0][i] = 4;
+    else if (i < 8)
+        outt[i - 4][3] = 4;
+    else if (i < 12)
+        outt[3][11 - i] = 4;
+    else
+        outt[15 - i][0] = 4;
+};
+//---------------------------------------------
+void checklast(int number)
+{
+    int x, y, count = 0;
+    for (int i = 0; i < 4; i++)
+        for (int y = 0; y < 4; y++)
+            if (outt[i][y] == number)
+                count++;
+
+    if (count == 3)
+    {
+        count = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int c = 0; c < 4; c++)
+                if (outt[i][c] == number)
+                    count++;
+            if (count == 0)
+                y = i;
+            count = 0;
+        }
+        count = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int c = 0; c < 4; c++)
+                if (outt[c][i] == number)
+                    count++;
+            if (count == 0)
+                x = i;
+            count = 0;
+        }
+        // cout<<endl<<"x"<<x<<" y"<<y<<endl;
+        outt[y][x] = number;
+    }
+}
+//---------------------------------------------
+void check4r2(int clues[])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if ((outt[0][i] == 4) && (clues[11 - i] == 2))
+            outt[3][i] = 3;
+        if ((outt[3][i] == 4) && (clues[i] == 2))
+            outt[0][i] = 3;
+        if ((outt[i][0] == 4) && (clues[4 + i] == 2))
+            outt[i][3] = 3;
+        if ((outt[i][3] == 4) && (clues[15 - i] == 2))
+            outt[i][0] = 3;
+    }
+}
+
+bool checkc0(int c)
+{
+    for (int i = 0; i < 4; i++)
+        if (outt[i][c] != 0)
+            return false;
+
+    return true;
+}
+bool checkr0(int c)
+{
+    for (int i = 0; i < 4; i++)
+        if (outt[c][i] != 0)
+            return false;
+
+    return true;
+}
+
+void check4and3(int clues[])
+{
+    for (int p = 0; p < 16; p++)
+        if (clues[p] == 3)
+        {
+            if (p < 4)
+            {
+                if (checkc0(p))
+                {
+                    if ((checkr0(2)) && (!checkr0(3)))
+                        outt[2][p] = 4;
+                    else if ((checkr0(3)) && (!checkr0(2)))
+                        outt[3][p] = 4;
+                }
+            }
+            else if (p < 8)
+            {
+                if (checkr0(p - 4))
+                {
+                    if ((checkc0(0)) && (!checkc0(1)))
+                        outt[p - 4][0] = 4;
+                    else if ((checkc0(1)) && (!checkc0(0)))
+                        outt[p - 4][1] = 4;
+                }
+            }
+
+            else if (p < 12)
+            {
+                if (checkc0(11 - p))
+                {
+                    if ((checkr0(0)) && (!checkr0(1)))
+                        outt[0][p] = 4;
+                    else if ((checkr0(1)) && (!checkr0(0)))
+                        outt[1][p] = 4;
+                }
+            }
+
+
+            else
+            {
+                if (checkr0(15 - p))
+                    if ((checkc0(2)) && (!checkc0(3)))
+                        outt[15 - p][2] = 4;
+                    else if ((checkc0(3)) && (!checkc0(2)))
+                        outt[15 - p][3] = 4;
+            }
+        }
+}
+//------------------------------------------------------------------------------
+
+bool vclues(int cl)
+{
+    int vec[4];
+
+    if (cl < 4)
+    {
+        vec[0] = outt[0][cl];
+        vec[1] = outt[1][cl];
+        vec[2] = outt[2][cl];
+        vec[3] = outt[3][cl];
+    }
+    else if (cl < 8)
+    {
+        vec[0] = outt[cl - 4][3];
+        vec[1] = outt[cl - 4][2];
+        vec[2] = outt[cl - 4][1];
+        vec[3] = outt[cl - 4][0];
+    }
+    else if (cl < 12)
+    {
+        vec[0] = outt[3][11 - cl];
+        vec[1] = outt[2][11 - cl];
+        vec[2] = outt[1][11 - cl];
+        vec[3] = outt[0][11 - cl];
+    }
+    else
+    {
+        vec[0] = outt[15 - cl][0];
+        vec[1] = outt[15 - cl][1];
+        vec[2] = outt[15 - cl][2];
+        vec[3] = outt[15 - cl][3];
+    }
+
+
+    switch (clu[cl])
+    {
+        case 1:
+            if (vec[0] == 4)
+                return true;
+            break;
+        case 2:
+            if ((vec[1] == 4) || ((vec[2] == 4) && (vec[0] > vec[1]))
+                || ((vec[3] == 4) && (vec[0] > vec[1]) && (vec[0] > vec[2])))
+                return true;
+            break;
+        case 3:
+            if (((vec[3] == 4) && (vec[1] == 3)) || ((vec[3] == 4) && (vec[0] == 2))
+                || ((vec[2] == 4) && (vec[1] > vec[0])))
+                return true;
+            break;
+        case 4:
+            if ((vec[0] == 1) && (vec[1] == 2) && (vec[2] == 3) && (vec[3] == 4))
+                return true;
+            break;
+    }
+    return false;
+}
+
+bool checkmatrix(void)
+{
+
+    for (int y = 0; y < 4; y++)
+    {
+        if ((outt[y][0] == outt[y][1]) || (outt[y][0] == outt[y][2]) || (outt[y][0] == outt[y][3]))
+            return false;
+        if ((outt[y][1] == outt[y][2]) || (outt[y][1] == outt[y][3]))
+            return false;
+        if (outt[y][2] == outt[y][3])
+            return false;
+    }
+    for (int y = 0; y < 4; y++)
+    {
+        if ((outt[0][y] == outt[1][y]) || (outt[0][y] == outt[2][y]) || (outt[0][y] == outt[3][y]))
+            return false;
+        if ((outt[1][y] == outt[2][y]) || (outt[1][y] == outt[3][y]))
+            return false;
+        if (outt[2][y] == outt[3][y])
+            return false;
+    }
+
+    for (int i = 0; i < 16; i++)
+        if (clu[i] != 0)
+            if (!(vclues(i)))
+                return false;
+
+
+    return true;
+}
+bool fill(int p)
+{
+    bool test = false;
+
+    if (outt[p / 4][p % 4] == 0)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (((p % 4) > 0) && (outt[p / 4][p % 4 - 1] == i + 1))
+            {
+                continue;
+            }
+
+            else
+            {
+                outt[p / 4][p % 4] = i + 1;
+                if (p < 15)
+                {
+                    if (fill(p + 1))
+                    {
+                        test = true;
+                        return true;
+                    }
+                }
+                else if (checkmatrix())
+                    return true;
+            }
+        }
+
+
+        if (!test)
+            outt[p / 4][p % 4] = 0;
+    }
+    else if (p < 15)
+    {
+        if (fill(p + 1))
+        {
+            test = true;
+            return true;
+        }
+    }
+    else if (checkmatrix())
+        return true;
+    return test;
+}
+
+//-----------------------------------------------------------------------------
+int** SolvePuzzle(int* clues)
+{
+    for (int i = 0; i < 16; i++)
+        clu[i] = clues[i];
+
+    for (int p = 0; p < 16; p++)
+        outt[p / 4][p % 4] = 0;
+
+    for (int i = 0; i < 16; i++)
+    {
+        if (clues[i] == 4)
+            enter4(i);
+        if (clues[i] == 1)
+            enter1(i);
+    }
+    checklast(4);
+    check4and3(clues);
+    check4r2(clues);
+    checklast(3);
+
+
+    for (int i = 0; i < 4; i++)
+    {
+        outt[0][0] = i + 1;
+        if (fill(1))
+            break;
+    }
+
+    ptout[0] = &outt[0][0];
+    ptout[1] = &outt[1][0];
+    ptout[2] = &outt[2][0];
+    ptout[3] = &outt[3][0];
+
+
+    cout << endl;
+    cout << *ptout[0];
+    return &ptout[0];
+}
