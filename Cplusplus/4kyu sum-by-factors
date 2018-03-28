@@ -1,3 +1,5 @@
+// 4kyu https://www.codewars.com/kata/sum-by-factors
+
 #include <string>
 #include <vector>
 
