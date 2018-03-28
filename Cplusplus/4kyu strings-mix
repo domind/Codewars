@@ -1,0 +1,67 @@
+// 4kyu https://www.codewars.com/kata/strings-mix
+
+using namespace std;
+#include <string>
+#include <tuple>
+#include <vector>
+typedef tuple<int, char, string> mytuple;
+bool mycompare(const mytuple& lhs, const mytuple& rhs)
+{
+    return get<0>(lhs) > get<0>(rhs);
+}
+bool mycompare2(const mytuple& lhs, const mytuple& rhs)
+{
+    return get<2>(lhs) < get<2>(rhs);
+}
+class Mix
+{
+public:
+    static std::string mix(const std::string& s1, const std::string& s2)
+    {
+
+        std::string t[26], t2[26];
+
+        for (int i = 0; i < s1.length(); i++)
+        {
+            if ((s1[i] <= 'z') && (s1[i] >= 'a'))
+                t[s1[i] - 97] = t[s1[i] - 97] + s1[i];
+        }
+
+        for (int i = 0; i < s2.length(); i++)
+            if ((s2[i] <= 'z') && (s2[i] >= 'a'))
+                t2[s2[i] - 97] = t2[s2[i] - 97] + s2[i];
+
+        for (int c = 0; c <= 25; c++)
+        {
+            if ((t[c].length() > 1) || (t2[c].length() > 1))
+                if (t[c].length() < t2[c].length())
+                    t[c] = "2:" + t2[c];
+                else if (t[c].length() == t2[c].length())
+                    t[c] = "=:" + t[c];
+                else
+                    t[c] = "1:" + t[c];
+            else
+                t[c] = "";
+        }
+    std:
+        string out = "";
+
+        vector<mytuple> a;
+        int i = 0;
+        for (int c = 0; c <= 25; c++)
+            if (t[c] != "")
+            {
+                a.push_back(make_tuple(t[c].length(), t[c][2], t[c]));
+                i++;
+            }
+
+        std::stable_sort(a.begin(), a.end(), mycompare2);
+        std::stable_sort(a.begin(), a.end(), mycompare);
+
+        for (vector<mytuple>::iterator iter = a.begin(); iter != a.end(); iter++)
+            out = out + std::get<2>(*iter) + "/";
+        out.pop_back();
+
+        return out;
+    }
+};
