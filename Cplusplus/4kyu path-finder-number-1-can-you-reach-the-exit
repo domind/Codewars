@@ -1,0 +1,131 @@
+// 4kyu https://www.codewars.com/kata/path-finder-number-1-can-you-reach-the-exit
+
+#include <iostream>
+#include <string>
+
+int n = 0;
+int x = 0;
+int y = 0;
+int direction = 0;
+
+using namespace std;
+string maze2;
+
+void forward(int dir)
+{
+
+    switch (dir)
+    {
+        case 0:
+            x++;
+            break;
+        case 1:
+            y++;
+            break;
+        case 2:
+            x--;
+            break;
+        case 3:
+            y--;
+            break;
+    }
+}
+
+bool look(int dir)
+{
+
+    if (dir < 0)
+        dir = 3;
+    if (dir > 3)
+        dir = 0;
+    switch (dir)
+    {
+        case 0:
+        {
+            if ((x + 1) > (n - 2))
+            {
+                return false;
+            }
+            else
+            {
+                if (maze2[(y)*n + x + 1] == 'W')
+                    return false;
+                else
+                    return true;
+            }
+
+            break;
+        }
+        case 1:
+        {
+            if ((y + 1) > (n - 2))
+                return false;
+            else if (maze2[(y + 1) * n + x] == 'W')
+                return false;
+            else
+                return true;
+            break;
+        }
+        case 2:
+        {
+            if ((x - 1) < (0))
+                return false;
+            else if (maze2[(y)*n + x - 1] == 'W')
+                return false;
+            else
+                return true;
+            break;
+        }
+        case 3:
+        {
+            if ((y - 1) < (0))
+                return false;
+            else if (maze2[(y - 1) * n + x] == 'W')
+                return false;
+            else
+                return true;
+            break;
+        }
+    }
+}
+
+
+bool path_finder(string maze)
+{
+    n = 0;
+    x = 0;
+    y = 0;
+    direction = 0;
+
+    maze2 = maze;
+
+
+    n = maze.find("\n") + 1;
+    if (maze[x] == 'W')
+        return false;
+
+    while ((y < (n - 2)) or (x < (n - 2)))
+    {
+        if ((x == 0) and (y == 0) and (direction == 3))
+        {
+            return false;
+        }
+        if (look(direction - 1))
+        {
+            if (direction > 0)
+                direction--;
+            else
+                direction = 3;
+        }
+
+        if (look(direction))
+            forward(direction);
+        else if (direction < 3)
+            direction++;
+        else
+            direction = 0;
+    }
+
+
+    return true;
+}
