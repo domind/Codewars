@@ -1,0 +1,31 @@
+// 4kyu https://www.codewars.com/kata/count-ones-in-a-segment
+
+#include <iostream>
+#include <bitset>
+#include <math.h>
+using namespace std;
+
+//=============================================================
+long long onespower(int number)
+{
+    long long sum = 0, remaining = number;
+    int one = 0;
+    string bin = bitset<32>(number).to_string();
+
+    for (int i = 0; i < 32; i++)
+    {
+        if (bin[i] == '1')
+        {
+            one++;
+            remaining = remaining - pow(2, 32 - i - 1);
+            sum = sum + pow(2, 31 - i - 1) * (32 - i - 1) + remaining;
+        }
+    }
+    return sum + one;
+}
+
+//=============================================================
+long long countOnes(int left, int right)
+{
+    return onespower(right) - onespower(left - 1);
+}
