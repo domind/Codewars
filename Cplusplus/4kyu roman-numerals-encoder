@@ -1,0 +1,114 @@
+// 4kyu https://www.codewars.com/kata/roman-numerals-encoder
+
+string solution(int number)
+{
+
+    string s = "";
+
+    switch (number / 1000)
+    {
+        case 1:
+            s.push_back('M');
+            break;
+        case 2:
+            s = s + "MM";
+            break;
+        case 3:
+            s = s + "MMM";
+            break;
+    }
+
+    number = number % 1000;
+    switch (number / 100)
+    {
+        case 1:
+            s.push_back('C');
+            break;
+        case 2:
+            s = s + "CC";
+            break;
+        case 3:
+            s = s + "CCC";
+            break;
+        case 4:
+            s = s + "CD";
+            break;
+        case 5:
+            s = s + "D";
+            break;
+        case 6:
+            s = s + "DC";
+            break;
+        case 7:
+            s = s + "DCC";
+            break;
+        case 8:
+            s = s + "DCCC";
+            break;
+        case 9:
+            s = s + "CM";
+            break;
+    }
+    number = number % 100;
+    switch (number / 10)
+    {
+        case 1:
+            s = s + "X";
+            break;
+        case 2:
+            s = s + "XX";
+            break;
+        case 3:
+            s = s + "XXX";
+            break;
+        case 4:
+            s = s + "XL";
+            break;
+        case 5:
+            s = s + "L";
+            break;
+        case 6:
+            s = s + "LX";
+            break;
+        case 7:
+            s = s + "LXX";
+            break;
+        case 8:
+            s = s + "LXXX";
+            break;
+        case 9:
+            s = s + "XC";
+            break;
+    }
+    switch (number % 10)
+    {
+        case 1:
+            s.push_back('I');
+            break;
+        case 2:
+            s = s + "II";
+            break;
+        case 3:
+            s = s + "III";
+            break;
+        case 4:
+            s = s + "IV";
+            break;
+        case 5:
+            s = s + "V";
+            break;
+        case 6:
+            s = s + "VI";
+            break;
+        case 7:
+            s = s + "VII";
+            break;
+        case 8:
+            s = s + "VIII";
+            break;
+        case 9:
+            s = s + "IX";
+            break;
+    }
+    return s;
+}
