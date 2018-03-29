@@ -1,0 +1,81 @@
+// 5kyu https://www.codewars.com/kata/first-variation-on-caesar-cipher
+
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class CaesarCipher
+{
+public:
+    static std::vector<std::string> movingShift(const std::string& s, int shift);
+    static std::string demovingShift(std::vector<std::string>& s, int shift);
+};
+
+std::vector<std::string> CaesarCipher::movingShift(const std::string& s, int shift)
+{
+    std::vector<std::string> out;
+    string s1 = s;
+    int kk = 0;
+    for (int i = 0; i < s1.length(); ++i)
+    {
+        if (s1[i] > 64)
+        {
+            if (s1[i] < 91)
+                if (s1[i] + (shift + kk) % 26 > 90)
+                    s1[i] = (shift + kk) % 26 - 26 + s1[i];
+                else
+                    s1[i] = (shift + kk) % 26 + s1[i];
+            if (s1[i] > 96)
+                if (s1[i] + (shift + kk) % 26 > 122)
+                    s1[i] = (shift + kk) % 26 - 26 + s1[i];
+                else
+                    s1[i] = (shift + kk) % 26 + s1[i];
+        }
+        kk++;
+    }
+
+    kk = s1.length();
+
+    int beg = kk / 5;
+    if (kk % 5 != 0)
+        beg++;
+    int last = kk - 4 * beg;
+    out.push_back(s1.substr(0, beg));
+    out.push_back(s1.substr(beg, beg));
+    out.push_back(s1.substr(2 * beg, beg));
+    out.push_back(s1.substr(3 * beg, beg));
+    out.push_back(s1.substr(4 * beg, last));
+
+
+    return out;
+}
+
+std::string CaesarCipher::demovingShift(std::vector<std::string>& s, int shift)
+{
+    string s1 = s[0] + s[1] + s[2] + s[3] + s[4];
+    int kk = 0;
+    int t = 0;
+    for (int i = 0; i < s1.length(); ++i)
+    {
+        if (s1[i] > 64)
+        {
+            cout << s1[i] << " ";
+            t = (shift + kk) % 26;
+            if (s1[i] < 91)
+                if (s1[i] - t < 65)
+                    s1[i] = s1[i] - t + 26;
+                else
+                    s1[i] -= t;
+            if (s1[i] > 96)
+                if (s1[i] - t < 97)
+                    s1[i] = s1[i] - t + 26;
+                else
+                    s1[i] -= t;
+            cout << i << " " << s1[i] << " " << (int)s1[i] << endl;
+        }
+        kk++;
+    }
+    cout << kk;
+    return s1;
+};
