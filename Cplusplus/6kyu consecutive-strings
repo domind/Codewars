@@ -1,0 +1,46 @@
+// 6kyu https://www.codewars.com/kata/consecutive-strings
+
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+class LongestConsec
+{
+public:
+    static std::string longestConsec(std::vector<std::string>& strarr, int k);
+};
+
+std::string LongestConsec::longestConsec(std::vector<std::string>& strarr, int k)
+
+{
+    string s;
+
+    if (k <= 0)
+        return ""; // handling stupid cases
+    if (strarr.size() == 0)
+        return "";
+    if (k > strarr.size())
+        return "";
+
+    int t2[strarr.size() - k + 1];
+
+    for (int i = 0; i < strarr.size() - k + 1; i++)
+    {
+        t2[i] = 0;
+        for (int ii = i; ii < i + k; ii++)
+            t2[i] = t2[i] + strarr[ii].length();
+    }
+    int big = 0, bigi = 0;
+
+    for (int i = 0; i < strarr.size() - k + 1; i++)
+        if (t2[i] > big)
+        {
+            big = t2[i];
+            bigi = i;
+        }
+
+    for (int i = bigi; i < bigi + k; i++)
+        s = s + strarr[i];
+
+    return s;
+}
