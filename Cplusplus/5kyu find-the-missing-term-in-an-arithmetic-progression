@@ -1,0 +1,18 @@
+// 5kyu https://www.codewars.com/kata/find-the-missing-term-in-an-arithmetic-progression
+
+using namespace std;
+static long findMissing(std::vector<long> list)
+{
+
+    int difrence = 0;
+    if (abs(list[1] - list[0]) < abs(list[2] - list[1]))
+        difrence = list[1] - list[0];
+    else
+        difrence = list[2] - list[1];
+
+    for (int i = 0; i < list.size() - 1; i++)
+        if (difrence != list[i + 1] - list[i])
+            return list[i] + difrence;
+
+    return 1;
+}
