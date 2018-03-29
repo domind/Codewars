@@ -1,0 +1,38 @@
+// 5kyu https://www.codewars.com/kata/rgb-to-hex-conversion
+
+class RGBToHex
+{
+public:
+    static std::string rgb(int r, int g, int b)
+
+    {
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+
+        std::string s;
+        std::stringstream ss;
+        long int t;
+        if (r > 255)
+            r = 255;
+        if (r < 0)
+            r = 0;
+        if (g > 255)
+            g = 255;
+        if (g < 0)
+            g = 0;
+        if (b > 255)
+            b = 255;
+        if (b < 0)
+            b = 0;
+        ss.width(6);
+        ss.fill('0');
+        ss << std::hex << (r * 65536 + g * 256 + b);
+        s = ss.str();
+        std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+
+        return s;
+    }
+};
