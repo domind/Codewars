@@ -1,0 +1,24 @@
+//6kyu https://www.codewars.com/kata/equal-sides-of-an-array
+
+#include <vector>
+using namespace std;
+
+int find_even_index(const vector<int> numbers)
+{
+    int sum = 0;
+    int test = 0;
+
+    for (int i = 0; i < numbers.size(); i++)
+    {
+        sum = sum + numbers[i];
+    }
+    for (int i = 0; i < numbers.size(); i++)
+    {
+        test = test + numbers[i];
+
+        if (test == sum)
+            return i;
+        sum = sum - numbers[i];
+    }
+    return -1;
+}
