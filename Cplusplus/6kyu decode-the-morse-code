@@ -1,0 +1,32 @@
+//6kyu https://www.codewars.com/kata/decode-the-morse-code
+
+std::string decodeMorse(std::string morseCode)
+{
+    // ToDo: Accept dots, dashes and spaces, return human-readable message
+    std::string decoded;
+    std::string part;
+    int space = 0;
+    part = "";
+
+    for (int i = 0; i <= morseCode.length(); i++)
+    {
+        if ((morseCode[i] == '.') or (morseCode[i] == '-'))
+        {
+            if (space > 1)
+                decoded = decoded + " ";
+            part = part + morseCode[i];
+            space = 0;
+        }
+        else if (morseCode[i] == ' ')
+        {
+            decoded += MORSE_CODE[part];
+            part = "";
+            space++;
+        }
+    }
+    decoded += MORSE_CODE[part];
+    if (decoded[0] == ' ')
+        decoded.erase(decoded.begin());
+
+    return decoded;
+}
