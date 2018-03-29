@@ -1,0 +1,24 @@
+//6kyu https://www.codewars.com/kata/fold-an-array/
+
+class Kata
+{
+public:
+    std::vector<int> foldArray(std::vector<int> array, int runs)
+    {
+        for (int i = runs; i >= 1; i--)
+        {
+
+            div_t divres;
+
+            divres = div(array.size(), 2);
+            for (int y = 0; y < array.size() / 2; y++)
+                array[y] = array[y] + array[array.size() - 1 - y];
+            if (divres.rem == 1)
+                array.resize(array.size() / 2 + 1);
+            else
+                array.resize(array.size() / 2);
+        }
+
+        return array;
+    }
+};
