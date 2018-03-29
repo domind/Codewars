@@ -1,0 +1,97 @@
+// 2kyu https://www.codewars.com/kata/my-smallest-code-interpreter-aka-brainf-star-star-k/
+
+#include <string>
+#include <vector>
+using namespace std;
+
+std::string brainLuck(std::string code, std::string input)
+{
+    cout << code << endl;
+    cout << input << endl;
+    char t[20];
+    for (int i = 0; i < 10; i++)
+        t[i] = 0;
+
+    int pointer = 0, codePosition = 0;
+    string outt = "";
+
+    while (codePosition < code.length())
+    {
+        switch (code[codePosition])
+        {
+            case ',':
+            {
+                if (input != "")
+                {
+                    t[pointer] = input[0];
+                    input.erase(0, 1);
+                }
+                else
+                    t[pointer] = 0;
+                break;
+            }
+            case '.':
+            {
+                outt.push_back(t[pointer]);
+                break;
+            }
+
+            case '>':
+            {
+                pointer++;
+                break;
+            }
+            case '<':
+            {
+                pointer--;
+                break;
+            }
+            case '+':
+            {
+                t[pointer]++;
+                break;
+            }
+            case '-':
+            {
+                t[pointer]--;
+                break;
+            }
+            case '[':
+            {
+                int brackets = 1;
+                if (!t[pointer])
+                    do
+                    {
+                        codePosition++;
+                        if (code[codePosition] == '[')
+                            brackets++;
+                        if (code[codePosition] == ']')
+                            brackets--;
+
+                    } while ((code[codePosition] != ']') || (brackets != 0));
+
+
+                break;
+            }
+            case ']':
+            {
+                int brackets = -1;
+                if (t[pointer])
+                    do
+                    {
+                        codePosition--;
+                        if (code[codePosition] == '[')
+                            brackets++;
+                        if (code[codePosition] == ']')
+                            brackets--;
+
+                    } while ((code[codePosition] != '[') || (brackets != 0));
+
+                break;
+            }
+        }
+        codePosition++;
+    }
+
+    return outt;
+}
