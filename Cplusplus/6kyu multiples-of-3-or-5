@@ -1,0 +1,23 @@
+//6kyu https://www.codewars.com/kata/multiples-of-3-or-5
+
+int solution(int number)
+{
+
+#include <stdio.h> /* printf */
+#include <stdlib.h>
+
+    int sum = 0;
+    div_t divresult;
+
+    for (int i = 3; i < number; i = i + 3)
+        sum = sum + i;
+
+    for (int i = 5; i < number; i = i + 5)
+    {
+        divresult = div(i, 3);
+        if (divresult.rem != 0)
+            sum = sum + i;
+    }
+
+    return sum;
+}
