@@ -1,0 +1,60 @@
+//6kyu https://www.codewars.com/kata/alphabet-war-airstrike-letters-massacre
+
+#include <string>
+using namespace std;
+
+string alphabetWar(string fight)
+{
+    int l = 0;
+    int p = 0;
+    std::size_t found;
+    while (fight.find('*') != std::string::npos)
+    {
+        found = fight.find('*');
+
+        if ((fight[found + 1] != '*') and ((found + 1) < fight.size()))
+            fight[found + 1] = ' ';
+        fight[found] = ' ';
+        if (found > 0)
+            fight[found - 1] = ' ';
+    }
+
+
+    for (int i = 0; i < fight.length(); i++)
+    {
+        switch (fight[i])
+        {
+            case 'w':
+                l = l + 4;
+                break;
+            case 'p':
+                l = l + 3;
+                break;
+            case 'b':
+                l = l + 2;
+                break;
+            case 's':
+                l = l + 1;
+                break;
+            case 'm':
+                p = p + 4;
+                break;
+            case 'q':
+                p = p + 3;
+                break;
+            case 'd':
+                p = p + 2;
+                break;
+            case 'z':
+                p = p + 1;
+                break;
+        }
+    }
+    if (l == p)
+        return "Let's fight again!";
+    else if (l > p)
+        return "Left side wins!";
+    else
+        return "Right side wins!";
+    return "Have mercy!";
+}
