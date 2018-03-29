@@ -1,0 +1,31 @@
+// 5kyu https://www.codewars.com/kata/directions-reduction
+
+class DirReduction
+{
+public:
+    static std::vector<std::string> dirReduc(std::vector<std::string>& arr)
+    {
+        int i = 0;
+        arr.push_back(" ");
+        while (i <= int(arr.size() - 2))
+        {
+            if (((arr[i] == "NORTH") and (arr[i + 1] == "SOUTH"))
+                or ((arr[i] == "EAST") and (arr[i + 1] == "WEST"))
+                or ((arr[i] == "SOUTH") and (arr[i + 1] == "NORTH"))
+                or ((arr[i] == "WEST") and (arr[i + 1] == "EAST")))
+            {
+                if (arr.size() > i)
+                    arr.erase(arr.begin() + i, arr.begin() + i + 2);
+                if (i > 0)
+                    i--;
+            }
+
+
+            else
+                i++;
+        }
+        arr.pop_back();
+
+        return arr;
+    }
+};
