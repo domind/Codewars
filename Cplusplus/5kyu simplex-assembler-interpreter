@@ -1,0 +1,105 @@
+// 5kyu https://www.codewars.com/kata/simple-assembler-interpreter
+
+
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <utility>
+using namespace std;
+
+
+static int& getReg(std::unordered_map<std::string, int>& regs, std::string name)
+{
+}
+
+
+std::unordered_map<std::string, int> assembler(const std::vector<std::string>& program)
+{
+    int iter = 0;
+    vector<char> var;
+    vector<int> varval;
+
+    string instruction;
+    while (iter < program.size())
+    {
+        instruction = program[iter].substr(0, 3);
+        if (instruction == "mov")
+        {
+            int point = -1;
+            for (int i = 0; i < var.size(); i++)
+                if (program[iter][4] == var[i])
+                    point = i;
+            if (point == -1)
+            {
+                var.push_back(program[iter][4]);
+                varval.push_back(0);
+                point = var.size() - 1;
+            }
+
+            if ((program[iter][6] >= 'a') && (program[iter][6] <= 'z'))
+            {
+                int point2 = -1;
+                for (int i = 0; i < var.size(); i++)
+                    if (program[iter][6] == var[i])
+                        point2 = i;
+                varval[point] = varval[point2];
+            }
+            else
+            {
+                varval[point] = stoi(program[iter].substr(6));
+            }
+        }
+
+
+        if (instruction == "inc")
+        {
+            int point = -1;
+            for (int i = 0; i < var.size(); i++)
+                if (program[iter][4] == var[i])
+                    point = i;
+            varval[point]++;
+        }
+        if (instruction == "dec")
+        {
+            int point = -1;
+            for (int i = 0; i < var.size(); i++)
+                if (program[iter][4] == var[i])
+                    point = i;
+            varval[point]--;
+        }
+
+
+        if (instruction == "jnz")
+        {
+            int point = -1;
+            for (int i = 0; i < var.size(); i++)
+                if (program[iter][4] == var[i])
+                    point = i;
+            if (point == -1)
+            {
+                if (program[iter][4] != '0')
+                    iter = iter + stoi(program[iter].substr(6)) - 1;
+            }
+            else
+            {
+                if (varval[point] != 0)
+                    iter = iter + stoi(program[iter].substr(6)) - 1;
+            }
+        }
+
+        iter++;
+    }
+
+    std::unordered_map<std::string, int> t;
+    pair<string, int> kk;
+    string k1;
+    for (int i = 0; i < var.size(); i++)
+    {
+        k1.push_back(var[i]);
+        kk = make_pair(k1, varval[i]);
+        t.insert(kk);
+        k1 = "";
+    }
+
+    return t;
+}
