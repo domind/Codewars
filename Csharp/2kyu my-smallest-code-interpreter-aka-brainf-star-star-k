@@ -1,0 +1,94 @@
+// 2kyu https://www.codewars.com/kata/my-smallest-code-interpreter-aka-brainf-star-star-k/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public
+static class Kata
+{
+public
+    static string BrainLuck(string code, string input)
+    {
+        byte[] t = new byte[20];
+        int pointer = 0, codePosition = 0;
+        string outt = "";
+        int brackets = 0;
+        bool inputEnd = false;
+        while (codePosition < code.Length)
+        {
+            switch (code[codePosition])
+            {
+                case ',':
+                {
+                    if (input != "")
+                    {
+                        t[pointer] = (byte)input[0];
+                        input = input.Remove(0, 1);
+                    }
+                    else
+                    {
+                        t[pointer] = 0;
+                        inputEnd = true;
+                    }
+                    break;
+                }
+                case '.':
+                {
+                    outt = outt + (char)(t[pointer]);
+                    break;
+                }
+                case '>':
+                {
+                    pointer++;
+                    break;
+                }
+                case '<':
+                {
+                    pointer--;
+                    break;
+                }
+                case '+':
+                {
+                    t[pointer]++;
+                    break;
+                }
+                case '-':
+                {
+                    t[pointer]--;
+                    break;
+                }
+                case '[':
+                {
+                    brackets = 1;
+                    if (t[pointer] == 0)
+                        do
+                        {
+                            codePosition++;
+                            if (code[codePosition] == '[')
+                                brackets++;
+                            if (code[codePosition] == ']')
+                                brackets--;
+                        } while (brackets != 0);
+                    break;
+                }
+                case ']':
+                {
+                    brackets = -1;
+                    if (t[pointer] != 0)
+                        do
+                        {
+                            codePosition--;
+                            if (code[codePosition] == '[')
+                                brackets++;
+                            if (code[codePosition] == ']')
+                                brackets--;
+                        } while (brackets != 0);
+                    break;
+                }
+            }
+            codePosition++;
+        }
+        return outt;
+    }
+}
