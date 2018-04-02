@@ -1,0 +1,79 @@
+//4kyu https://www.codewars.com/kata/strings-mix/csharp
+
+using System;
+public
+class Mixing
+{
+public
+    static string Mix(string s1, string s2)
+    {
+
+        string[] t = new string[26];
+        string[] t2 = new string[26];
+        for (int c = 0; c <= 25; c++)
+        {
+            t[c] = System.String.Empty;
+            t2[c] = System.String.Empty;
+        }
+        for (int i = 0; i < s1.Length; i++)
+        {
+            if ((s1[i] <= 'z') && (s1[i] >= 'a'))
+                t[s1[i] - 97] = t[s1[i] - 97] + s1[i];
+        }
+
+        for (int i = 0; i < s2.Length; i++)
+            if ((s2[i] <= 'z') && (s2[i] >= 'a'))
+                t2[s2[i] - 97] = t2[s2[i] - 97] + s2[i];
+
+        for (int c = 0; c <= 25; c++)
+        {
+            if ((t[c].Length > 1) || (t2[c].Length > 1))
+
+                if (t[c].Length < t2[c].Length)
+                {
+                    t[c] = "2:" + t2[c];
+                }
+                else
+                {
+                    if (t[c].Length == t2[c].Length)
+                        t[c] = "=:" + t[c];
+                    else
+                        t[c] = "1:" + t[c];
+                }
+            else
+                t[c] = "";
+        }
+
+
+        string outt = System.String.Empty;
+        ;
+        int comp = 0;
+        foreach (string i in t)
+            if (i.Length > comp)
+                comp = i.Length;
+
+        while (comp > 0)
+        {
+            for (int i = 0; i <= 25; i++)
+            {
+                if ((t[i].Length == comp) && (t[i][0] == '1'))
+                    outt += t[i] + '/';
+            }
+            for (int i = 0; i <= 25; i++)
+            {
+                if ((t[i].Length == comp) && (t[i][0] == '2'))
+                    outt += t[i] + '/';
+            }
+            for (int i = 0; i <= 25; i++)
+            {
+                if ((t[i].Length == comp) && (t[i][0] == '='))
+                    outt += t[i] + '/';
+            }
+            comp--;
+        }
+        if (outt.Length > 0)
+            outt = outt.Remove(outt.Length - 1);
+
+        return outt;
+    }
+}
