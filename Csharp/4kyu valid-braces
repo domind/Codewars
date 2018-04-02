@@ -1,0 +1,43 @@
+// 4kyu https://www.codewars.com/kata/valid-braces
+// translation from C++
+
+
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+
+public
+class Brace
+{
+
+public
+    static bool validBraces(String braces)
+    {
+        int eras = 0;
+        while (braces != "")
+        {
+            eras = 0;
+            for (int i = 0; i < braces.Length - 1; i++)
+            {
+
+                if (((braces[i] == '(') && (braces[i + 1] == ')'))
+
+                    || ((braces[i] == '[') && (braces[i + 1] == ']'))
+
+                    || ((braces[i] == '{') && (braces[i + 1] == '}')))
+                {
+                    braces = braces.Remove(i, 2);
+                    eras++;
+                    i = (-1);
+                }
+            }
+
+            if ((braces != "") && (eras == 0))
+                return false;
+            else
+                eras = 0;
+        }
+        return true;
+    }
+}
