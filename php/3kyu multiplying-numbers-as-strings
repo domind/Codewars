@@ -1,0 +1,106 @@
+// 3kyu https://www.codewars.com/kata/multiplying-numbers-as-strings
+// translation from C++
+
+function summ(string $smm, string $sas)
+{
+    $sm = "000";
+    settype($sm, "string");
+    $c = '0';
+    settype($c, "string");
+    $pom = 0;
+    $pom2 = 0;
+    $pp = 0;
+
+    if ((strlen($sas)) >= (strlen($smm)))
+    {
+        if ((strlen($sas) - strlen($smm)) == 0)
+        {
+            $sm = "";
+        }
+        else
+        {
+            $sm = substr($sas, 0, (strlen($sas) - strlen($smm)));
+            $sas = substr($sas, strlen($sas) - strlen($smm));
+        }
+    }
+    else
+    {
+        $sm = substr($smm, 0, strlen($smm) - strlen($sas));
+        $smm = substr($smm, strlen($smm) - strlen($sas));
+    }
+
+    for ($i = strlen($sas) - 1; $i >= 0; $i--)
+    {
+        $pom = $smm[$i] + $sas[$i];
+        $pom = $pom + $pom2;
+        $smm[$i] = ($pom % 10);
+        $pom2 = $pom / 10;
+    }
+    if (strlen($sm) > 0)
+        for ($i = strlen($sm) - 1; $i >= 0; $i--)
+        {
+            $pom = $sm[$i] + $pom2;
+            $sm[$i] = ($pom % 10);
+            $pom2 = $pom / 10;
+        }
+    $c = (int)$pom2;
+    settype($c, "string");
+    if ($pom2 >= 1)
+        $sm = $c.$sm;
+    $smm = $sm.$smm;
+
+    return $smm;
+}
+
+function multiply1(string $s, int $x)
+{
+    $help = 0;
+    settype($help, "integer");
+    $dec1 = 0;
+    settype($dec1, "integer");
+    $c = '0';
+
+    for ($i = strlen($s) - 1; $i >= 0; $i--)
+    {
+        $help = ($s[$i]) * ($x);
+        $help = $help + $dec1;
+        $s[$i] = ($help % 10);
+        $dec1 = (int)($help / 10);
+    }
+
+    $c = $dec1;
+    if ($dec1 >= 1)
+        $s = $c.$s;
+
+    return $s;
+}
+
+function multiply(string $a, string $b)
+    : string
+{
+    // Write your code here
+    if ($a == "0")
+        return "0";
+    if ($b == "0")
+        return "0";
+
+    $suma = "0";
+
+    while ($a[0] == '0')
+        $a = substr($a, 1); // ltrim($aa,'0');not working for some reason
+    while ($b[0] == '0')
+        $b = substr($b, 1); // ltrim($b,'0'); not working for some reason
+
+    $total = "";
+
+    for ($y = strlen($b) - 1; $y >= 0; $y--)
+    {
+        $suma = summ(multiply1($a, ($b[$y])).$total, $suma);
+        $total = $total."0";
+    }
+
+    $total = $suma;
+    if ($total[0] == '0')
+        $total = '0';
+    return $total;
+}
