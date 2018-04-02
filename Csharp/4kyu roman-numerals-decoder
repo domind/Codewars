@@ -1,0 +1,77 @@
+// 4kyu https://www.codewars.com/kata/roman-numerals-decoder/csharp
+
+// translation from C++
+
+
+using System;
+
+public
+class RomanDecode
+{
+public
+    static int Solution(string roman)
+    {
+
+        int sum = 0;
+        int i = 0;
+
+        if (roman == "")
+            return 0;
+        int found = roman.IndexOf("CM");
+        if (found != -1)
+        {
+            sum = sum + 900;
+            roman = roman.Replace("CM", "00");
+        }
+        found = roman.IndexOf("CD");
+        if (found != -1)
+        {
+            sum = sum + 400;
+            roman = roman.Replace("CD", "00");
+        }
+        found = roman.IndexOf("XC");
+        if (found != -1)
+        {
+            sum = sum + 90;
+            roman = roman.Replace("XC", "00");
+        }
+        found = roman.IndexOf("XL");
+        if (found != -1)
+        {
+            sum = sum + 40;
+            roman = roman.Replace("XL", "00");
+        }
+        found = roman.IndexOf("IX");
+        if (found != -1)
+        {
+            sum = sum + 9;
+            roman = roman.Replace("IX", "00");
+        }
+        found = roman.IndexOf("IV");
+        if (found != -1)
+        {
+            sum = sum + 4;
+            roman = roman.Replace("IV", "00");
+        }
+
+        for (i = 0; i < roman.Length; i++)
+        {
+            if (roman[i] == 'M')
+                sum = sum + 1000;
+            if (roman[i] == 'D')
+                sum = sum + 500;
+            if (roman[i] == 'C')
+                sum = sum + 100;
+            if (roman[i] == 'L')
+                sum = sum + 50;
+            if (roman[i] == 'X')
+                sum = sum + 10;
+            if (roman[i] == 'V')
+                sum = sum + 5;
+            if (roman[i] == 'I')
+                sum = sum + 1;
+        }
+
+        return sum;
+    }
+}
