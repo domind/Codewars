@@ -1,0 +1,27 @@
+// 6kyu https://www.codewars.com/kata/equal-sides-of-an-array/csharp
+// translation from C++
+
+public
+class Kata
+{
+public
+    static int FindEvenIndex(int[] arr)
+    {
+        int sum = 0;
+        int test = 0;
+
+        for (int i = 0; i < arr.Length; i++)
+        {
+            sum = sum + arr[i];
+        }
+
+        for (int i = 0; i < arr.Length; i++)
+        {
+            test = test + arr[i];
+            if (test == sum)
+                return i;
+            sum = sum - arr[i];
+        }
+        return -1;
+    }
+}
