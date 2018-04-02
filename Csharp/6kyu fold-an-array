@@ -1,0 +1,31 @@
+// 6kyu https://www.codewars.com/kata/fold-an-array/csharp
+// translation from C++
+
+using System;
+using System.Collections;
+public
+class Kata
+{
+public
+    static int[] FoldArray(int[] array, int runs)
+    {
+        int t = array.Length;
+        int[] array2 = new int[t];
+        for (int i = 0; i < t; i++)
+            array2[i] = array[i];
+
+        while (runs > 0)
+        {
+            if (t > 1)
+                for (int i = 0; i < (t / 2); i++)
+                    array2[i] = array2[i] + array2[t - 1 - i];
+            t = t / 2 + t % 2;
+            runs--;
+        }
+        int[] outt = new int[t];
+        for (int i = 0; i < t; i++)
+            outt[i] = array2[i];
+
+        return outt;
+    }
+}
