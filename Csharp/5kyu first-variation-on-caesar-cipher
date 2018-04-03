@@ -1,0 +1,76 @@
+// 5kyu https://www.codewars.com/kata/first-variation-on-caesar-cipher
+// translation from C++
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+public
+class CaesarCipher
+{
+public static List<string> movingShift(string s, int shift)
+    {
+        StringBuilder s1 = new StringBuilder(s);
+        List<string> outt = new List<string>();
+        int kk = 0;
+        for (int i = 0; i < s1.Length; ++i)
+        {
+            if (s1[i] > 64)
+            {
+                if (s1[i] < 91)
+                    if (s1[i] + (shift + kk) % 26 > 90)
+                        s1[i] = (char)((shift + kk) % 26 - 26 + s1[i]);
+                    else
+                        s1[i] = (char)((shift + kk) % 26 + s1[i]);
+                if (s1[i] > 96)
+                    if (s1[i] + (shift + kk) % 26 > 122)
+                        s1[i] = (char)((shift + kk) % 26 - 26 + s1[i]);
+                    else
+                        s1[i] = (char)((shift + kk) % 26 + s1[i]);
+            }
+            kk++;
+        }
+        kk = s1.Length;
+        int beg = kk / 5;
+        if (kk % 5 != 0)
+            beg++;
+        int last = kk - 4 * beg;
+        outt.Add(s1.ToString(0, beg));
+        outt.Add(s1.ToString(beg, beg));
+        outt.Add(s1.ToString(2 * beg, beg));
+        outt.Add(s1.ToString(3 * beg, beg));
+        outt.Add(s1.ToString(4 * beg, last));
+
+
+        return outt;
+    }
+
+public
+    static string demovingShift(List<string> s, int shift)
+    {
+        StringBuilder s1 = new StringBuilder(s[0] + s[1] + s[2] + s[3] + s[4]);
+        int kk = 0;
+        int t = 0;
+        for (int i = 0; i < s1.Length; ++i)
+        {
+            if (s1[i] > 64)
+            {
+
+                t = (shift + kk) % 26;
+                if (s1[i] < 91)
+                    if (s1[i] - t < 65)
+                        s1[i] = (char)(s1[i] - t + 26);
+                    else
+                        s1[i] -= (char)t;
+                if (s1[i] > 96)
+                    if (s1[i] - t < 97)
+                        s1[i] = (char)(s1[i] - t + 26);
+                    else
+                        s1[i] -= (char)t;
+            }
+            kk++;
+        }
+
+        return s1.ToString();
+    }
+}
