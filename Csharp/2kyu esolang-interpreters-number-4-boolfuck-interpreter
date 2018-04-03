@@ -1,0 +1,139 @@
+// 2kyu https://www.codewars.com/kata/esolang-interpreters-number-4-boolfuck-interpreter
+
+using System;
+
+public class Boolfuck
+{
+public static string interpret(string code, string input)
+    {
+
+        byte[] t = new byte[200000];
+        int pointer = 100000, codePosition = 0;
+        byte inputPointer = 8;
+        byte[] buffer = new byte[8];
+        byte outPointer = 0;
+        byte[] outB = new byte[8];
+        byte charBuf = 0;
+        string outt = System.String.Empty;
+        int brackets = 0;
+        bool inputEnd = false;
+
+        while (codePosition < code.Length)
+        {
+            switch (code[codePosition])
+            {
+                case ',':
+                {
+                    if (inputPointer >= 8)
+                    {
+                        if (input != "")
+                        {
+                            for (int i = 0; i < 8; i++)
+                                buffer[i] = 0;
+                            for (int i = 0; i < 8; ++i)
+                                buffer[i] = (byte)((input[0] >> i) & 1);
+                            inputPointer = 0;
+                            for (int i = 0; i < 8; i++)
+                                t[pointer] = buffer[inputPointer];
+                            inputPointer++;
+                            input = input.Remove(0, 1);
+                        }
+                        else
+                        {
+                            t[pointer] = 0;
+                            inputEnd = true;
+                        }
+                    }
+                    else
+                    {
+                        t[pointer] = buffer[inputPointer];
+                        inputPointer++;
+                    }
+
+                    break;
+                }
+                case ';':
+                {
+
+
+                    outB[outPointer] = t[pointer];
+                    outPointer++;
+
+                    if (outPointer >= 8)
+                    {
+                        outPointer = 0;
+                        charBuf = 0;
+                        for (int i = 0; i < 8; i++)
+                        {
+                            charBuf = (byte)(charBuf + (byte)(outB[i] << i));
+                        }
+                        outt = outt + (char)charBuf;
+                        for (int i = 0; i < 8; i++)
+                            outB[i] = 0;
+                    }
+                    break;
+                }
+                case '>':
+                {
+                    pointer++;
+                    break;
+                }
+                case '<':
+                {
+                    pointer--;
+                    break;
+                }
+                case '+':
+                {
+                    if (t[pointer] == 1)
+                        t[pointer] = 0;
+                    else
+                        t[pointer] = 1;
+                    break;
+                }
+
+                case '[':
+                {
+                    brackets = 1;
+                    if (t[pointer] == 0)
+                        do
+                        {
+                            codePosition++;
+                            if (code[codePosition] == '[')
+                                brackets++;
+                            if (code[codePosition] == ']')
+                                brackets--;
+                        } while (brackets != 0);
+                    break;
+                }
+                case ']':
+                {
+                    brackets = -1;
+                    if (t[pointer] != 0)
+                        do
+                        {
+                            codePosition--;
+                            if (code[codePosition] == '[')
+                                brackets++;
+                            if (code[codePosition] == ']')
+                                brackets--;
+                        } while (brackets != 0);
+                    break;
+                }
+            }
+            codePosition++;
+        }
+
+        if (outPointer != 0)
+        {
+            outPointer = 0;
+            charBuf = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                charBuf = (byte)(charBuf + (byte)(outB[i] << i));
+            }
+            outt = outt + (char)charBuf;
+        }
+        return outt;
+    }
+}
