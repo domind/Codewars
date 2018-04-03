@@ -1,0 +1,40 @@
+//5kyu https://www.codewars.com/kata/directions-reduction
+
+using System;
+using System.Collections.Generic;
+public class DirReduction
+{
+
+public static string[] dirReduc(String[] arr)
+    {
+        int i = 0;
+        List<string> ar = new List<string>();
+        for (int i1 = 0; i1 < arr.Length; i1++)
+            ar.Add(arr[i1]);
+
+        ar.Add(" ");
+
+        while (i <= (ar.Count - 2))
+        {
+            if (((ar[i] == "NORTH") && (ar[i + 1] == "SOUTH"))
+                || ((ar[i] == "EAST") && (ar[i + 1] == "WEST"))
+                || ((ar[i] == "SOUTH") && (ar[i + 1] == "NORTH"))
+                || ((ar[i] == "WEST") && (ar[i + 1] == "EAST")))
+            {
+                if (ar.Count > i)
+                    ar.RemoveRange(i, 2);
+                if (i > 0)
+                    i--;
+            }
+
+
+            else
+                i++;
+        }
+        ar.RemoveAt(ar.Count - 1);
+        string[] s = new string[ar.Count];
+        for (int i1 = 0; i1 < ar.Count; i1++)
+            s[i1] = ar[i1];
+        return s;
+    }
+}
