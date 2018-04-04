@@ -1,0 +1,213 @@
+// 2kyu https://www.codewars.com/kata/4-by-4-skyscrapers
+// translation from C++
+
+public class Skyscrapers
+{
+
+public static void enter4(int i, ref int[][] outt)
+    {
+        if (i < 4)
+        {
+            outt[0][i] = 1;
+            outt[1][i] = 2;
+            outt[2][i] = 3;
+            outt[3][i] = 4;
+        }
+        if ((i > 3) && (i < 8))
+        {
+            outt[i - 4][3] = 1;
+            outt[i - 4][2] = 2;
+            outt[i - 4][1] = 3;
+            outt[i - 4][0] = 4;
+        }
+        if ((i > 7) && (i < 12))
+        {
+            outt[3][11 - i] = 1;
+            outt[2][11 - i] = 2;
+            outt[1][11 - i] = 3;
+            outt[0][11 - i] = 4;
+        }
+        if (i > 11)
+        {
+            outt[15 - i][0] = 1;
+            outt[15 - i][1] = 2;
+            outt[15 - i][2] = 3;
+            outt[15 - i][3] = 4;
+        }
+    }
+    //---------------------------------------------
+public static void enter1(int i, ref int[][] outt)
+    {
+        if (i < 4)
+            outt[0][i] = 4;
+        else if (i < 8)
+            outt[i - 4][3] = 4;
+        else if (i < 12)
+            outt[3][11 - i] = 4;
+        else
+            outt[15 - i][0] = 4;
+    }
+    //---------------------------------------------
+
+
+public static bool vclues(int cl, ref int[][] outt, ref int[] clu)
+    {
+        int[] vec = new int[4];
+
+        if (cl < 4)
+        {
+            vec[0] = outt[0][cl];
+            vec[1] = outt[1][cl];
+            vec[2] = outt[2][cl];
+            vec[3] = outt[3][cl];
+        }
+        else if (cl < 8)
+        {
+            vec[0] = outt[cl - 4][3];
+            vec[1] = outt[cl - 4][2];
+            vec[2] = outt[cl - 4][1];
+            vec[3] = outt[cl - 4][0];
+        }
+        else if (cl < 12)
+        {
+            vec[0] = outt[3][11 - cl];
+            vec[1] = outt[2][11 - cl];
+            vec[2] = outt[1][11 - cl];
+            vec[3] = outt[0][11 - cl];
+        }
+        else
+        {
+            vec[0] = outt[15 - cl][0];
+            vec[1] = outt[15 - cl][1];
+            vec[2] = outt[15 - cl][2];
+            vec[3] = outt[15 - cl][3];
+        }
+
+
+        switch (clu[cl])
+        {
+            case 1:
+                if (vec[0] == 4)
+                    return true;
+                break;
+            case 2:
+                if ((vec[1] == 4) || ((vec[2] == 4) && (vec[0] > vec[1]))
+                    || ((vec[3] == 4) && (vec[0] > vec[1]) && (vec[0] > vec[2])))
+                    return true;
+                break;
+            case 3:
+                if (((vec[3] == 4) && (vec[1] == 3)) || ((vec[3] == 4) && (vec[0] == 2))
+                    || ((vec[2] == 4) && (vec[1] > vec[0])))
+                    return true;
+                break;
+            case 4:
+                if ((vec[0] == 1) && (vec[1] == 2) && (vec[2] == 3) && (vec[3] == 4))
+                    return true;
+                break;
+        }
+        return false;
+    }
+
+    //----------------------------------------------------------
+public static bool checkmatrix(ref int[][] outt, ref int[] clu)
+    {
+
+        for (int y = 0; y < 4; y++)
+        {
+            if ((outt[y][0] == outt[y][1]) || (outt[y][0] == outt[y][2])
+                || (outt[y][0] == outt[y][3]))
+                return false;
+            if ((outt[y][1] == outt[y][2]) || (outt[y][1] == outt[y][3]))
+                return false;
+            if (outt[y][2] == outt[y][3])
+                return false;
+        }
+        for (int y = 0; y < 4; y++)
+        {
+            if ((outt[0][y] == outt[1][y]) || (outt[0][y] == outt[2][y])
+                || (outt[0][y] == outt[3][y]))
+                return false;
+            if ((outt[1][y] == outt[2][y]) || (outt[1][y] == outt[3][y]))
+                return false;
+            if (outt[2][y] == outt[3][y])
+                return false;
+        }
+
+        for (int i = 0; i < 16; i++)
+            if (clu[i] != 0)
+                if (!(vclues(i, ref outt, ref clu)))
+                    return false;
+
+
+        return true;
+    }
+
+public static bool fill(int p, ref int[][] outt, ref int[] clu)
+    {
+        bool test = false;
+
+        if (outt[p / 4][p % 4] == 0)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (((p % 4) > 0) && (outt[p / 4][p % 4 - 1] == i + 1))
+                {
+                    continue;
+                }
+
+                else
+                {
+                    outt[p / 4][p % 4] = i + 1;
+                    if (p < 15)
+                    {
+                        if (fill(p + 1, ref outt, ref clu))
+                        {
+                            test = true;
+                            return true;
+                        }
+                    }
+                    else if (checkmatrix(ref outt, ref clu))
+                        return true;
+                }
+            }
+
+
+            if (!test)
+                outt[p / 4][p % 4] = 0;
+        }
+        else if (p < 15)
+        {
+            if (fill(p + 1, ref outt, ref clu))
+            {
+                test = true;
+                return true;
+            }
+        }
+        else if (checkmatrix(ref outt, ref clu))
+            return true;
+        return test;
+    }
+    //--------------------------------------------------------------------
+
+public static int[][] SolvePuzzle(int[] clues)
+    {
+        int[][] outt = new int[4][];
+        for (int i = 0; i < 4; i++)
+            outt[i] = new int[4];
+
+        for (int i = 0; i < 16; i++)
+        {
+            if (clues[i] == 4)
+                enter4(i, ref outt);
+            if (clues[i] == 1)
+                enter1(i, ref outt);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            outt[0][0] = i + 1;
+            if (fill(1, ref outt, ref clues))
+                break;
+        }
+        return outt;
+    }
+}
