@@ -1,0 +1,40 @@
+//5kyu https://www.codewars.com/kata/minimum-path-in-squares
+
+using System;
+using System.Collections.Generic;
+
+public class MinPathSquare
+{
+
+public static int x1, y1;
+public static int[, ] grid1;
+public static int[, ] sum;
+
+
+public static void NextCell(int xx, int yy, int summ)
+    {
+        if ((sum[yy, xx] > summ + grid1[yy, xx]) || (sum[yy, xx] == 0))
+            sum[yy, xx] = summ + grid1[yy, xx];
+        else
+            return;
+
+        if ((xx == x1) && (yy == y1))
+            return;
+
+        if (xx + 1 <= x1)
+            NextCell(xx + 1, yy, summ + grid1[yy, xx]);
+        if (yy + 1 <= y1)
+            NextCell(xx, yy + 1, summ + grid1[yy, xx]);
+    }
+
+public static int MinPath(int[, ] grid, int x, int y)
+    {
+
+        grid1 = grid;
+        sum = new int[grid.GetLength(0), grid.GetLength(0)];
+        x1 = x;
+        y1 = y;
+        NextCell(0, 0, 0);
+        return sum[y, x];
+    }
+}
