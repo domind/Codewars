@@ -1,0 +1,93 @@
+// 5kyu https://www.codewars.com/kata/simple-assembler-interpreter
+
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Vector;
+
+public class SimpleAssembler {
+    public static Map < String, Integer > interpret(String[] program) {
+
+        int iter = 0;
+        Vector
+        var = new Vector();
+        Vector varval = new Vector();
+        String instruction;
+
+        while (iter < program.length) {
+            instruction = program[iter].substring(0, 3);
+
+            if (instruction.equals("mov")) {
+                int point = -1;
+                for (int i = 0; i <
+                    var.size(); i++)
+                    if (program[iter].substring(4, 5) ==
+                        var.get(i))
+                        point = i;
+                if (point == -1) {
+                    var.addElement(program[iter].charAt(4));
+                    varval.addElement(0);
+                    point =
+                        var.size() - 1;
+                }
+                if ((program[iter].charAt(6) >= 'a') && (program[iter].charAt(6) <= 'z')) {
+                    int point2 = -1;
+                    for (int i = 0; i <
+                        var.size(); i++)
+                        if (program[iter].charAt(6) == (char) var.get(i))
+                            point2 = i;
+                    varval.set(point, varval.get(point2));
+                } else {
+                    varval.set(point, Integer.parseInt(program[iter].substring(6)));
+                }
+
+            }
+
+            if (instruction.equals("inc")) {
+                int point = -1;
+                for (int i = 0; i <
+                    var.size(); i++)
+
+                    if (program[iter].charAt(4) == ((char) var.get(i)))
+                        point = i;
+                varval.set(point, (int) varval.get(point) + 1);
+            }
+
+            if (instruction.equals("dec")) {
+                int point = -1;
+                for (int i = 0; i <
+                    var.size(); i++)
+                    if (program[iter].charAt(4) == (char) var.get(i))
+                        point = i;
+                varval.set(point, (int) varval.get(point) - 1);
+            }
+
+            if (instruction.equals("jnz")) {
+                int point = -1;
+                for (int i = 0; i <
+                    var.size(); i++)
+                    if (program[iter].charAt(4) == (char) var.get(i))
+                        point = i;
+                if (point == -1) {
+                    if ((int) program[iter].charAt(4) != '0')
+                        iter = iter + Integer.parseInt(program[iter].substring(6)) - 1;
+                } else {
+                    if ((int) varval.get(point) != 0)
+                        iter = iter + Integer.parseInt(program[iter].substring(6)) - 1;
+                }
+            }
+
+            iter++;
+        }
+
+        Map < String, Integer > kk = new TreeMap();
+        String k1 = "";
+        System.out.println(var.size());
+        for (int i = 0; i <
+            var.size(); i++) {
+            k1 = k1 + (var.get(i));
+            kk.put(k1, (int) varval.get(i));
+            k1 = "";
+        }
+        return kk;
+    }
+}
