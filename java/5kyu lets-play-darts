@@ -1,0 +1,21 @@
+// 5kyu https://www.codewars.com/kata/lets-play-darts/
+
+public class Dartboard {
+
+    public String getScore(double x, double y) {
+        String[] score= {"6","13","4","18","1","20","5","12","9","14","11","8","16","7","19","3","17","2","15","10"};
+        double distance;
+        double angle;
+        distance = Math.sqrt(x * x + y * y);
+        if (distance > 170) return "X";
+        if (distance <= 6.35) return "DB";
+        else if (distance <= 15.9) return "SB";
+        angle = (Math.acos(x / distance) * 180 / Math.PI);
+        if (y < 0) angle = 360 - angle;
+        if (angle > 351) angle = 0;
+        angle = angle / 18;
+        if ((distance < 107) && (distance > 99)) return "T" + score[(int) Math.round(angle)];
+        if ((distance < 170) && (distance > 162)) return "D" + score[(int) Math.round(angle)];
+        return score[(int) Math.round(angle)];
+    }
+}
